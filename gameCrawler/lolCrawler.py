@@ -1,18 +1,17 @@
-import json
 from urllib.parse import urljoin
 
 
 class lolCrawler:
-    def __init__(self, lol_url, championship, downloader):
+    def __init__(self, lol_url, downloader):
         self.lol_url = lol_url
         self.downloader = downloader
-        self.getLolInformation(championship)
 
     def getLolInformation(self, championship):
         lolUrl = urljoin(self.lol_url, f"/{championship}")
-        params = self.configParams(championship)
-        response = self.downloader.post(lolUrl, data=params)
-        print(response)
+        response = self.downloader.get(lolUrl).content
+        return response
 
-    def configParams(self, championship):
-        return {"name": championship}
+    def getRequestStatus(self, championship):
+        lolUrl = urljoin(self.lol_url, f"/{championship}")
+        response = self.downloader.get(lolUrl).status_code
+        return response
