@@ -1,27 +1,15 @@
-from urllib.parse import urljoin
-
-from Downloader import Downloader
-from gameCrawler.lolCrawler import lolCrawler
-from bs4 import BeautifulSoup
+from lolRequestChampionships import lolChampionshipValues
 
 
 linkLolWiki = "https://lol.fandom.com/wiki"
 
+getRequestIntances = lolChampionshipValues(linkLolWiki)
+championships = getRequestIntances.getLolChampionships()
 
-def lolRequestHtml(link, league):
-    return lolCrawler(link, league, Downloader()).getLolInformation(league)
+print("Escolha o campeonato que deseja: ")
+for index, leagues in enumerate(championships):
+    print(f'\t{index+1} - {leagues.replace("_", " ")}')
 
+championshipIndex = int(input("Entrada: "))
 
-def lolRequestStatusCode(link, league):
-    return lolCrawler(link, league, Downloader()).getRequestStatus(league)
-
-
-page = lolRequestHtml(linkLolWiki, "")
-html_page = BeautifulSoup(page, 'html.parser')
-
-listSearchAllUl = html_page.findAll('ul')
-listSearchChampionships = listSearchAllUl[7]
-listChampionship = [championship['href'].replace('/wiki/', '') for championship in listSearchChampionships.findAll('a')]
-print(listChampionship[0])
-
-print(lolRequestStatusCode(linkLolWiki, listChampionship[0]))
+print(getRequestIntances.getLolTeamsOfChampionship(championshipIndex))
