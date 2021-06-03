@@ -34,8 +34,8 @@ class lolChampionshipValues:
     def getPlayersOfTeam(self, championshipIndex, teamIndex):
         prepareTeamString = self.getLolTeamsOfChampionship(championshipIndex)[teamIndex - 1].replace(' ', '_')
         getTeamHtml = getRequests(self.link, prepareTeamString).lolRequestSoup()
-        playerElement = getTeamHtml.findAll('a', class_='catlink-players to_hasTooltip')
-        playerslist = [player.get_text() for player in playerElement]
+        playerElement = getTeamHtml.findAll('td', class_='team-members-player')
+        playerslist = [player['data-player-id'] for player in playerElement]
         players = self.duplicateItensRemove(playerslist)
 
         return players
