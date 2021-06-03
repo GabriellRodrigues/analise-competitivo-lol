@@ -4,12 +4,13 @@ from lolRequestChampionships import lolChampionshipValues
 linkLolWiki = "https://lol.fandom.com/wiki"
 
 getRequestIntances = lolChampionshipValues(linkLolWiki)
+
 championships = getRequestIntances.getLolChampionships()
-
-print("Escolha o campeonato que deseja: ")
-for index, leagues in enumerate(championships):
-    print(f'\t{index+1} - {leagues.replace("_", " ")}')
-
+getRequestIntances.printListElement(championships)
 championshipIndex = int(input("Entrada: "))
 
-print(getRequestIntances.getLolTeamsOfChampionship(championshipIndex))
+teams = getRequestIntances.getLolTeamsOfChampionship(championshipIndex)
+getRequestIntances.printListElement(teams)
+teamIndex = int(input("Entrada: "))
+
+print(getRequestIntances.getPlayersOfTeam(championshipIndex, teamIndex))

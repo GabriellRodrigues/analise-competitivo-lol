@@ -8,15 +8,39 @@ class lolChampionshipValues:
     def getLolChampionships(self):
         listSearchAllUl = getRequests(self.link, "").lolRequestSoup().findAll('ul')
         listSearchChampionships = listSearchAllUl[7]
-        listChampionship = [championship['href'].replace('/wiki/', '') for championship in listSearchChampionships.findAll('a')]
+        listChampionship = [championship['href'].replace('/wiki/', '') for championship in
+                            listSearchChampionships.findAll('a')]
         listChampionship.remove('Roster_Swaps/Current/North_America')
         listChampionship.remove('Match_History_Index')
 
         return listChampionship
 
+    def duplicateItensRemove(self, listDuplicate):
+        li = []
+        for i in listDuplicate:
+            if i not in li:
+                li.append(i)
+
+        return li
+
     def getLolTeamsOfChampionship(self, championshipIndex):
         getChampionshipHtml = getRequests(self.link, self.getLolChampionships()[championshipIndex - 1]).lolRequestSoup()
         teamsTag = getChampionshipHtml.findAll('a', class_='catlink-teams tWACM tWAFM tWAN to_hasTooltip')
-        teams = [i.get_text() for i in teamsTag]
+        teamsElements = [i.get_text() for i in teamsTag]
+        team = self.duplicateItensRemove(teamsElements)
 
-        return teams
+        return team
+
+    def getPlayersOfTeam(self, championshipIndex, teamIndex):
+        prepareTeamString = self.getLolTeamsOfChampionship(championshipIndex)[teamIndex - 1].replace(' ', '_')
+        getTeamHtml = getRequests(self.link, prepareTeamString).lolRequestSoup()
+        playerElement = getTeamHtml.findAll('a', class_='catlink-players to_hasTooltip')
+        playerslist = [player.get_text() for player in playerElement]
+        players = self.duplicateItensRemove(playerslist)
+
+        return players
+
+    # TODO remover este metódo
+    def printListElement(self, listElement):
+        for index, element in enumerate(listElement):
+            print(f'\t{index + 1} - {element.replace("_", " ")}')
