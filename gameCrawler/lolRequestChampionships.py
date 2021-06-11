@@ -15,6 +15,7 @@ class lolChampionshipValues:
 
         return listChampionship
 
+    # TODO usar set
     def duplicateItensRemove(self, listDuplicate):
         li = []
         for i in listDuplicate:
@@ -31,6 +32,7 @@ class lolChampionshipValues:
 
         return team
 
+    # TODO pegar os times da academy
     def getPlayersOfTeam(self, championshipIndex, teamIndex):
         prepareTeamString = self.getLolTeamsOfChampionship(championshipIndex)[teamIndex - 1].replace(' ', '_')
         getTeamHtml = getRequests(self.link, prepareTeamString).lolRequestSoup()
